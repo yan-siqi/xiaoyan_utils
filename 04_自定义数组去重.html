@@ -1,0 +1,60 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>自定义数组去重方法</title>
+  </head>
+  <body>
+    <script src="./node_modules/atguigu-utils/dist/atguigu-utils.js"></script>
+    <script>
+      /* 
+        查找值得时候:数组==>根据下标去找  对象(容器)==>根据属性的标识去找(查找速度快)
+        */
+      /* 
+       笔记(容器):通过一个属性来保存多个人(id/name)==>根据对象的id查找对应的人对象
+       [{id:1,name:'a'},{id:2,name:'b'}]
+       属性名:是用来查找标识名称的属性值
+       使用对象的属性名查找,不需要进行遍历
+       */
+      const aUtils = {
+        //双层嵌套遍历
+        unique1(arr) {
+          const array = [];
+          arr.forEach((item) => {
+            //遍历原数组
+            if (!array.includes(item)) {
+              //如果数组中不包含这个项 内层遍历新数组
+              array.push(item);
+            }
+          });
+          return array;
+        },
+        //使用容器对象  判断是否添加过
+        unique2(arr) {
+          const array = [];
+          const container = {};
+          arr.forEach((item) => {
+            //遍历原数组
+            /* 
+            也可以用:!contaiiner hasOwnProperty(item)
+            */
+            if (!container[item]) {
+              //判断对象中是否有item属性
+              container[item] = true; //item=1 作为对象中的属性名 并将属性值置为true
+              array.push(item);
+            }
+          });
+          return array;
+        },
+        unique2(arr) {
+         //return Array.from(new Set(arr))//Es6中的语法
+         return [...new Set(arr)]//使用数组的结构赋值
+        },
+      };
+    </script>
+    <script>
+      console.log(aUtils.unique1([1, 2, 3, 4, 1, 1, 2, 3]));
+      console.log(aUtils.unique2([1, 2, 3, 4, 1, 1, 2, 3]));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,59 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>自定义浅拷贝</title>
+  </head>
+  <body>
+    <script src="./node_modules/atguigu-utils/dist/atguigu-utils.js"></script>
+    <script>
+      const aUtils = {
+        clone1(target) {
+          if (target !== null && typeof target === "object") {
+            //只有引用类型的数据才可以浅克隆
+            //不是函数的数据
+            if (Array.isArray(target)) {
+              //return [...target];//如果是数组
+              //return targrt.slice()//从第一个截取到最后个(完整的浅拷贝)
+               return target.map(item=>item)
+            } else {
+              return { ...target };//如果是对象
+            }
+          } else {
+            return target;
+          }
+        },
+        clone2(target){
+            if(target!==null && typeof target==='object'){
+                //准备一个容器
+                const clone =Array.isArray(targrt) ?[]:{}
+                for (const key in object) { //key:对象的属性名||数组的下标
+                    if (target.hasOwnProperty(key)) {//是否是自身的数据
+                        clone[key]=target[key]//向新容器中添加同名同值得数据
+                        
+                    }
+                    return clone
+                }
+            }else{
+                return target
+            }
+        }
+      };
+    </script>
+    <script>
+      const obj1 = { x: "a", y: { m: 1 } };
+      const clone = aUtils.clone1(obj1);
+      console.log(clone===obj1,obj1.y===clone.y);//false\true(浅克隆主要是拷贝的地址)
+      
+      const arr1 = ["a", { m: 1 }];
+      const clone2 = aUtils.clone1(arr1);
+      console.log(clone2===arr1,arr1[1]===clone2[1]);//false true 
+      function fn(){
+
+      }
+      const clone3=aUtils.clone2(fn);
+      console.log(clone3===fn);
+      
+    </script>
+  </body>
+</html>

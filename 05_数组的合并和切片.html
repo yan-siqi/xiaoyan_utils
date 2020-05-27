@@ -1,0 +1,66 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>自定义数组的合并和切片</title>
+  </head>
+  <body>
+    <script src="./node_modules/atguigu-utils/dist/atguigu-utils.js"></script>
+    <script>
+      const aUtils = {
+        //合并操作
+        concat(oldArr, ...value) {
+          const array = [...oldArr];
+          value.forEach((value) => {
+            //此时value的值可能是数组也可能能不是数组
+            //是的话,将其中的每个元素添加到数组中
+            if (Array.isArray(value)) {
+              array.push(...value);
+            } else {
+              //如果不是数组的话,将元素添加到数组中
+              array.push(value);
+            }
+          });
+          return array;
+        },
+        //切片操作 :返回的是一个由start和end决定的元素的浅拷贝,原始数组不变
+        slice(oldArr, start, end) {
+          const array = [];
+          //从老的数组中的开始(包含)到结束(不包含)的元素,添加到新的数组中'
+          for (let index = start; index < end; index++) {
+            array.push(oldArr[index]);
+          }
+          return array;
+        },
+        //优化
+        slice1(oldArr, start, end) {
+          const array = [];
+          if (!Array.isArray(oldArr)) {
+            //如果第一个参数不是数组的时候,提示
+            throw new Error("第一参数是数组");
+          }
+          if (oldArr.length === 0) return array;
+          //处理start 的特殊情况
+          if (start === undefined || start < 0) {
+            start = 0;
+          }
+          //处理end的特殊情况
+          if (end === undefined || end > oldArr.length) {
+            end = oldArr.length;
+          }
+          //从老的数组中的开始(包含)到结束(不包含)的元素,添加到新的数组中'
+          for (let index = start; index < end; index++) {
+            array.push(oldArr[index]);
+          }
+          return array;
+        },
+      };
+    </script>
+    <script>
+      console.log(aUtils.concat([1, 2], 3, [4, 5])); //12345
+      console.log(aUtils.slice([1, 2, 3, 4, 5], 0, 2)); //12
+      console.log(aUtils.slice1([1, 2, 3, 4, 5],1,20)); //12
+      console.log(aUtils.slice1([1, 2, 3, 4, 5])); 
+    </script>
+  </body>
+</html>

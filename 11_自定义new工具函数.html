@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>自定义new的工具函数</title>
+  </head>
+  <body>
+    <script>
+      /* 
+    1. 自定义new工具函数
+        语法: newInstance(Fn, ...args)
+        功能: 创建Fn构造函数的实例对象
+        实现: 创建空对象obj, 调用Fn指定this为obj, 返回obj
+    2. 自定义instanceof工具函数
+        语法: myInstanceOf(obj, Type)
+        功能: 判断obj是否是Type类型的实例
+        实现: Type的原型对象是否是obj的原型链上的某个对象, 如果是返回tru, 否则返回false
+    */
+    </script>
+    <script>
+      function Person(name) {
+          console.log(this.__proto__.constructor);//是整个person函数
+          
+        this.name = name;
+        //return undefined
+        //return null;
+        //return 0;
+        //return []//返回结果是[]
+          //return {}//-->{}
+         return function(){
+
+         }//返回结果是本身
+      }
+      const p = new Person("tom");
+      console.log(p);
+    </script>
+    <script>
+        //写new功能类似构造函数
+        function newInstance(Fn,...args){
+        //创建一个新的对象
+        const obj={}
+        //修正原型对象的constructor,指向person
+        obj.__proto__.constructor=Fn
+       
+        //通过新对象调用构造函数
+        const result =Fn.call(obj,...args)
+         //需要判断对象的结果 如果是对象类型
+         if(result instanceof Object){
+             return result
+         }else{
+             return obj
+         }
+        }
+        const p2=newInstance(Person,'jack')
+    </script>
+  </body>
+</html>

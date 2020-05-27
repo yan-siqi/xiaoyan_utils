@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>数组的扁平化处理</title>
+  </head>
+  <body>
+    <!-- 
+    数组扁平化: 多维数组变为一维数组,返回一个新的数组
+    1:reduce+concat
+    2:reduce+concat+递归(可以解决多维数组)
+  -->
+    <script src="./node_modules/atguigu-utils/dist/atguigu-utils.js"></script>
+    <script>
+      const aUtils = {
+        flatten1(array) {
+          return array.reduce((pre, item) => {
+            pre = pre.concat(item); //例子:[1,[2,[3,4]]] concat之后 ===>[1,2,[3,4]]
+            return pre;
+          }, []);
+        },
+        flatten2(array) {
+          return array.reduce((pre, item) => {
+            //如果item是一个包含数组元素的数组
+            if (
+              Array.isArray(item) &&
+              item.some((isItem) => Array.isArray(isItem))
+            ) {
+              //可以使用递归
+              pre = pre.concat(aUtils.flatten2(item));
+            } else {
+              pre = pre.concat(item);
+            }
+            return pre;
+          }, []);
+        },
+        flatten3(array) {
+          array = [].concat(...array);
+          while (array.some((item) => Array.isArray(item))) {
+            //判断该数组中是否还包含数组元素
+            array = [].concat(...array); //如果有就合并
+          }
+          return array;
+        },
+      };
+    </script>
+    <script>
+      console.log(aUtils.flatten1([1, [3, [2, 4]]]));
+      console.log(aUtils.flatten2([1, [3, [2, 4]]]));
+      console.log(aUtils.flatten2([1, [3, [2, [3, 4]]]]));
+      console.log(aUtils.flatten3([1, [3, [2, [3, 4]]]]));
+    </script>
+  </body>
+</html>
